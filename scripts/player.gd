@@ -10,6 +10,9 @@ extends CharacterBody2D
 # velocity dependent from jump_time_to_peak.
 @onready var jump_velocity: float = \
 	((2.0 * jump_height) / jump_time_to_peak) * -1.0
+# velocity dependent from jump_time_to_descend.
+@onready var double_jump_velocity: float = \
+	((2.0 * jump_height) / jump_time_to_descend) * -1.0
 # velocity dependent from jump_time_to_peak. Used while jumping.
 @onready var jump_gravity: float = \
 	((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
@@ -32,17 +35,35 @@ extends CharacterBody2D
 # Same as acceleration but on air so player could fast change direction
 @export_range(0.0 , 1.0) var air_acceleration: float = 0.5
 
+# used to control no more than once double jump
+var has_double_jumped: bool = false
+# used primarly to play landing animation
+var was_in_air: bool = false
+
 func _physics_process(delta):
-	velocity.y += get_gravity() * delta
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		jump()
+	if not is_on_floor():
+		velocity.y += get_gravity() * delta
+		was_in_air = true
+	else:
+		has_double_jumped = false
+		if was_in_air == true:
+			land()
+		was_in_air = false
+	
+	if Input.is_action_just_pressed("jump"):
+		if is_on_floor():
+			jump()
+		elif not has_double_jumped:
+			double_jump()
+	
 	if velocity.y > 2000:
 		velocity.y = 2000
 	
 	var horizontal_direction = Input.get_axis("move_left", "move_right")
 	velocity.x = get_horizontal_velocity(horizontal_direction)
-	update_animations(horizontal_direction)
 	move_and_slide()
+	update_animations(horizontal_direction)
+	update_facing_direction(horizontal_direction)
 
 # return a falling velocity based on jump time to peak or jump time to descend.
 func get_gravity() -> float:
@@ -51,6 +72,19 @@ func get_gravity() -> float:
 # used to set velicity.y when user press jump button.
 func jump():
 	velocity.y = jump_velocity
+	animation_player.play("jump")
+
+# used to set velocity.y when user press jump button on air.
+func double_jump():
+	velocity.y = double_jump_velocity
+	# TODO: add animation for double jump
+	animation_player.play("jump")
+	has_double_jumped = true
+
+# uset to play land animation.
+func land():
+	# TODO: add animation for land
+	animation_player.play("idle")
 
 # returns a velocity based on acceleration and friction.
 func get_horizontal_velocity(horizontal_direction) -> float:
@@ -65,20 +99,16 @@ func get_horizontal_velocity(horizontal_direction) -> float:
 
 # set current animation on AnimationPlayer
 func update_animations(horizontal_direction):
+	if not is_on_floor():
+		animation_player.play("fall")
+	else:
+		if horizontal_direction == 0:
+			animation_player.play("idle")
+		else:
+			animation_player.play("run")
+		
+
+# set flip sprite based on is facing direction
+func update_facing_direction(horizontal_direction):
 	if (horizontal_direction != 0):
 		sprite.flip_h = (horizontal_direction < 0)
-	
-	var animation_to_play = "idle"
-	
-	if is_on_floor():
-		if horizontal_direction == 0:
-			animation_to_play = "idle"
-		else:
-			animation_to_play = "run"
-		animation_player.play(animation_to_play)
-	else:
-		if velocity.y < 0:
-			animation_to_play = "jump"
-		elif velocity.y > 0:
-			animation_to_play = "fall"
-		animation_player.play(animation_to_play)
