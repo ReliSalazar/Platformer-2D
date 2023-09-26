@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://df6v510evr8y2"]
+[gd_scene load_steps=6 format=3 uid="uid://df6v510evr8y2"]
 
 [ext_resource type="PackedScene" uid="uid://grhwxm6lfn7h" path="res://scenes/player.tscn" id="1_lj7nr"]
 
@@ -6,50 +6,51 @@
 size = Vector2(1000, 100)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o8ijw"]
-size = Vector2(999, 100)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3hprn"]
-size = Vector2(996, 102)
+size = Vector2(224, 20)
 
 [sub_resource type="QuadMesh" id="QuadMesh_fn7l5"]
 size = Vector2(100, 1000)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mspo2"]
-size = Vector2(100, 1000)
+size = Vector2(22, 148)
 
 [node name="Wolrd" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_lj7nr")]
-position = Vector2(469, 300)
+position = Vector2(110, 106)
 
 [node name="Platform" type="StaticBody2D" parent="." groups=["platform"]]
-position = Vector2(530, 595)
+position = Vector2(129, 171)
 metadata/_edit_group_ = true
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="Platform"]
 modulate = Color(0.933333, 0.933333, 0.933333, 1)
+scale = Vector2(0.224, 0.2)
 mesh = SubResource("QuadMesh_qfda3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
 shape = SubResource("RectangleShape2D_o8ijw")
 
-[node name="Platform2" type="StaticBody2D" parent="." groups=["platform"]]
-position = Vector2(1405, 326)
-metadata/_edit_group_ = true
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform2"]
-modulate = Color(0.933333, 0.933333, 0.933333, 1)
-mesh = SubResource("QuadMesh_qfda3")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2"]
-shape = SubResource("RectangleShape2D_3hprn")
-
 [node name="Wall" type="StaticBody2D" parent="." groups=["wall"]]
-position = Vector2(0, 145)
+position = Vector2(8, 107)
+metadata/_edit_group_ = true
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="Wall"]
 modulate = Color(0.933333, 0.933333, 0.933333, 1)
+scale = Vector2(0.22, 0.148)
 mesh = SubResource("QuadMesh_fn7l5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
 shape = SubResource("RectangleShape2D_mspo2")
+
+[node name="Platform2" type="StaticBody2D" parent="." groups=["platform"]]
+position = Vector2(294, 115)
+metadata/_edit_group_ = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform2"]
+modulate = Color(0.933333, 0.933333, 0.933333, 1)
+scale = Vector2(0.224, 0.2)
+mesh = SubResource("QuadMesh_qfda3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2"]
+shape = SubResource("RectangleShape2D_o8ijw")
