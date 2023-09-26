@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 ## Jump "strength".
-@export var jump_height: int = 80
+@export var jump_height: int = 90
 ## Time to reach max height. smaller = more "slow motion" sensation on jump.
 @export_range(0.0, 1.0) var jump_time_to_peak: float = 0.25
 ## Time to reach floor. smaller = more "float" sensation on fall.
@@ -39,6 +39,7 @@ extends CharacterBody2D
 var has_double_jumped: bool = false
 # used primarly to play landing animation
 var was_in_air: bool = false
+var jumping_time: float = 0.0
 
 func _physics_process(delta):
 	if not is_on_floor():
@@ -49,12 +50,16 @@ func _physics_process(delta):
 		if was_in_air == true:
 			land()
 		was_in_air = false
+		
 	
 	if Input.is_action_just_pressed("jump"):
 		if is_on_floor():
 			jump()
 		elif not has_double_jumped:
 			double_jump()
+		
+	if Input.is_action_just_released("jump"):
+		jump_cut()
 	
 	if velocity.y > 2000:
 		velocity.y = 2000
@@ -68,6 +73,10 @@ func _physics_process(delta):
 # return a falling velocity based on jump time to peak or jump time to descend.
 func get_gravity() -> float:
 	return jump_gravity if velocity.y < 0.0 else fall_gravity
+
+func jump_cut():
+	if velocity.y < -150:
+		velocity.y = -150
 
 # used to set velicity.y when user press jump button.
 func jump():
