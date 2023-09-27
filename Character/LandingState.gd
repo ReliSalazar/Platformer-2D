@@ -9,7 +9,8 @@ func state_process(_delta):
 	if (character.is_on_floor()):
 		next_state = ground_state
 
-# if want to lock until animation finish do it like this:
+# This will be usefull for roll mechanic
+# if you want to lock until animation finish do it like this:
 func _on_animation_tree_animation_finished(anim_name):
 #	if (anim_name == landing_animation_name):
 #		next_state = ground_state
