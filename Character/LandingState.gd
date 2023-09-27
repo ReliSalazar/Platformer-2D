@@ -11,7 +11,6 @@ func state_process(_delta):
 
 # This will be usefull for roll mechanic
 # if you want to lock until animation finish do it like this:
-func _on_animation_tree_animation_finished(_anim_name):
+#func _on_animation_tree_animation_finished(anim_name):
 #	if (anim_name == landing_animation_name):
 #		next_state = ground_state
-	pass
