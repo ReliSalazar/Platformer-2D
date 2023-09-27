@@ -7,6 +7,14 @@
 
 [node name="Player" parent="." instance=ExtResource("1_lj7nr")]
 position = Vector2(40, 135)
+jump_height = 90
+jump_time_to_peak = 0.25
+jump_time_to_descend = 0.35
+speed = 220
+friction = 0.25
+acceleration = 0.25
+air_friction = 0.5
+air_acceleration = 0.5
 
 [node name="TileMap" parent="." instance=ExtResource("2_yueul")]
 position = Vector2(-1, 0)
