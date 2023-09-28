@@ -412,7 +412,6 @@ limit_top = -350
 limit_right = 747
 limit_bottom = 180
 limit_smoothed = true
-rotation_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
@@ -429,15 +428,15 @@ parameters/Move/blend_position = 0.57958
 [node name="Utils" type="Node" parent="."]
 script = ExtResource("8_5oqrg")
 
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "animation_tree", "current_state", "utils")]
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "animation_tree", "current_state")]
 script = ExtResource("3_i3rbl")
 character = NodePath("..")
 animation_tree = NodePath("../AnimationTree")
 current_state = NodePath("Ground")
-utils = NodePath("../Utils")
 
-[node name="Ground" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("air_state")]
+[node name="Ground" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("utils", "air_state")]
 script = ExtResource("4_0wexc")
+utils = NodePath("../../Utils")
 air_state = NodePath("../Air")
 
 [node name="Air" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("landing_state")]

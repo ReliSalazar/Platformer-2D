@@ -3,21 +3,6 @@ extends State
 class_name AirState
 
 @export var landing_state: State
-
-## Jump "strength".
-@export var jump_height: int = 90
-## Time to reach max height. smaller = more "slow motion" sensation on jump.
-@export_range(0.0, 1.0) var jump_time_to_peak: float = 0.25
-## Time to reach floor. smaller = more "float" sensation on fall.
-@export_range(0.0, 1.0) var jump_time_to_descend: float = 0.35
-
-# velocity dependent from jump_time_to_peak.
-@onready var jump_velocity: float = \
-	((2.0 * jump_height) / jump_time_to_peak) * -1.0
-# velocity dependent from jump_time_to_descend.
-@onready var double_jump_velocity: float = \
-	((2.0 * jump_height) / jump_time_to_descend) * -1.0
-
 @export var double_jump_animation: String = "double_jump"
 @export var landing_animation: String = "fall"
 
@@ -34,7 +19,7 @@ func state_input(event: InputEvent):
 		jump_cut()
 
 func double_jump():
-	character.velocity.y = double_jump_velocity
+	character.velocity.y = utils.double_jump_velocity
 	playback.travel(double_jump_animation)
 	has_double_jumped = true
 
