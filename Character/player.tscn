@@ -391,10 +391,11 @@ states/jump/position = Vector2(393, -21)
 transitions = ["Start", "Move", SubResource("AnimationNodeStateMachineTransition_208ke"), "Move", "jump", SubResource("AnimationNodeStateMachineTransition_txq1t"), "jump", "fall", SubResource("AnimationNodeStateMachineTransition_l163k"), "fall", "Move", SubResource("AnimationNodeStateMachineTransition_jfhwm"), "jump", "double_jump", SubResource("AnimationNodeStateMachineTransition_car4j"), "double_jump", "fall", SubResource("AnimationNodeStateMachineTransition_ahgx6")]
 graph_offset = Vector2(-162, -46)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("utils")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("utils", "camera")]
 collision_layer = 2
 script = ExtResource("1_r1v3f")
 utils = NodePath("Utils")
+camera = NodePath("Camera2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16)
@@ -429,9 +430,10 @@ parameters/Move/blend_position = 0.57958
 [node name="Utils" type="Node" parent="."]
 script = ExtResource("8_5oqrg")
 
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "animation_tree", "current_state", "utils")]
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "camera", "animation_tree", "current_state", "utils")]
 script = ExtResource("3_i3rbl")
 character = NodePath("..")
+camera = NodePath("../Camera2D")
 animation_tree = NodePath("../AnimationTree")
 current_state = NodePath("Ground")
 utils = NodePath("../Utils")

@@ -36,3 +36,25 @@ class_name CharacterUtils
 @export_range(0.0, 1.0) var air_friction: float = 0.3
 # Same as acceleration but on air so player could fast change direction
 @export_range(0.0 , 1.0) var air_acceleration: float = 0.3
+
+@export var max_camera_position: int = 35
+@export var camera_movement_factor: float = 0.9
+
+func get_horizontal_velocity(
+	direction: Vector2,
+	character_can_move: bool, velocity: Vector2
+) -> float:
+	var target_velocity = direction.x * speed if character_can_move else 0.0
+	var fric = friction if character_can_move else air_friction
+	var acc = acceleration if character_can_move else air_acceleration
+	
+	if velocity.y < 0.0:
+		return lerp(velocity.x, target_velocity, acc)
+	else:
+		return lerp(velocity.x, target_velocity, fric)
+
+
+func calculate_target_camera_x(camera: Camera2D, direction: Vector2) -> float:
+	var move_amount = 2.0 / camera_movement_factor
+	var target_x = camera.position.x + (move_amount * direction.x)
+	return clamp(target_x, -max_camera_position, max_camera_position)

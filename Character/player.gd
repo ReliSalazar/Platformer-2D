@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var animation_tree: AnimationTree = $AnimationTree
 
 @export var utils: CharacterUtils
+@export var camera: Camera2D
 
 var direction: Vector2 = Vector2.ZERO
 
@@ -19,6 +20,7 @@ func _physics_process(delta):
 	
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity.x = get_horizontal_velocity()
+	set_camera_position_x()
 	move_and_slide()
 	update_animation_parameters()
 	update_facing_direction()
@@ -28,14 +30,14 @@ func get_gravity() -> float:
 
 # returns a velocity based on acceleration and friction.
 func get_horizontal_velocity() -> float:
-	if direction.x != 0 && state_machine.character_can_move():
-		if velocity.y < 0.0:
-			return lerp(velocity.x, direction.x * utils.speed, utils.air_acceleration)
-		return lerp(velocity.x, direction.x * utils.speed, utils.acceleration)
-	else:
-		if velocity.y < 0.0:
-			return lerp(velocity.x, 0.0, utils.air_friction)
-		return lerp(velocity.x, 0.0, utils.friction)
+	return utils.get_horizontal_velocity(
+		direction,
+		state_machine.character_can_move(),
+		velocity
+	)
+
+func set_camera_position_x():
+	camera.position.x = utils.calculate_target_camera_x(camera, direction)
 
 # set current animation on AnimationPlayer
 func update_animation_parameters():
