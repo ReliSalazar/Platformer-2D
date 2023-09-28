@@ -53,7 +53,6 @@ func get_horizontal_velocity(
 	else:
 		return lerp(velocity.x, target_velocity, fric)
 
-
 func calculate_target_camera_x(camera: Camera2D, direction: Vector2) -> float:
 	var move_amount = 2.0 / camera_movement_factor
 	var target_x = camera.position.x + (move_amount * direction.x)

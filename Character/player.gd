@@ -19,8 +19,10 @@ func _physics_process(delta):
 		velocity.y = 2000
 	
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
 	velocity.x = get_horizontal_velocity()
 	set_camera_position_x()
+	
 	move_and_slide()
 	update_animation_parameters()
 	update_facing_direction()
