@@ -430,10 +430,9 @@ parameters/Move/blend_position = 0.57958
 [node name="Utils" type="Node" parent="."]
 script = ExtResource("8_5oqrg")
 
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "camera", "animation_tree", "current_state", "utils")]
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "animation_tree", "current_state", "utils")]
 script = ExtResource("3_i3rbl")
 character = NodePath("..")
-camera = NodePath("../Camera2D")
 animation_tree = NodePath("../AnimationTree")
 current_state = NodePath("Ground")
 utils = NodePath("../Utils")

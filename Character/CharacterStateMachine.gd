@@ -3,7 +3,6 @@ extends Node
 class_name CharacterStateMachine
 
 @export var character: CharacterBody2D
-@export var camera: Camera2D
 @export var animation_tree: AnimationTree
 @export var current_state: State
 @export var utils: CharacterUtils
@@ -15,7 +14,6 @@ func _ready():
 		if child is State:
 			states.append(child)
 			child.character = character
-			child.camera = camera
 			child.playback = animation_tree["parameters/playback"]
 			child.utils = utils
 			

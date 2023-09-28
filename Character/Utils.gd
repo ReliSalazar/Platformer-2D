@@ -57,3 +57,16 @@ func calculate_target_camera_x(camera: Camera2D, direction: Vector2) -> float:
 	var move_amount = 2.0 / camera_movement_factor
 	var target_x = camera.position.x + (move_amount * direction.x)
 	return clamp(target_x, -max_camera_position, max_camera_position)
+
+func calculate_target_camera_y(camera: Camera2D, direction: float) -> float:
+	var move_amount = 2.0 / camera_movement_factor
+	var movement_direction = 0
+	if (direction > 0):
+		movement_direction = move_amount
+	elif (direction < 0):
+		movement_direction = -move_amount
+	else:
+		movement_direction = 0
+	
+	var target_y = camera.position.y + movement_direction
+	return clamp(target_y, -max_camera_position, max_camera_position)
