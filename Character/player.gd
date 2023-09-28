@@ -24,13 +24,12 @@ func _physics_process(delta):
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity.x = get_horizontal_velocity()
 	move_and_slide()
-	
 	update_animation_parameters()
 	update_facing_direction()
-	
 	set_camera_position_x()
 	set_camera_position_y()
 
+# calulates gravity if is falling or jumping
 func get_gravity() -> float:
 	return utils.jump_gravity if velocity.y < 0.0 else utils.fall_gravity
 
@@ -51,9 +50,11 @@ func update_facing_direction():
 	if (direction.x != 0):
 		sprite.flip_h = (direction.x < 0)
 
+# set camera position x when walking a bit
 func set_camera_position_x():
 	camera.position.x = utils.calculate_target_camera_x(camera, direction)
 
+# set camera position y when moving camera up or down
 func set_camera_position_y():
 	if (Input.is_action_pressed("look_up")):
 		move_camera_y(-1) # Move camera up
@@ -65,6 +66,7 @@ func set_camera_position_y():
 	if (Input.is_action_just_released("look_down")):
 		move_camera_y(0) # Resets camera position
 
+# calculates new camera position on y when moving camera up or down
 func move_camera_y(looking_direction: int):
 	if looking_direction == 0:
 		camera.position.y = 0

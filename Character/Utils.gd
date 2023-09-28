@@ -24,7 +24,7 @@ class_name CharacterUtils
 
 # velocity dependent from jump_time_to_descend.
 @export var double_jump_velocity: float = \
-	((2.0 * jump_height) / jump_time_to_peak * 0.7) * -1.0
+	((2.0 * jump_height) / jump_time_to_peak * 0.75) * -1.0
 
 ## Horizontal player speed
 @export var speed: int = 170
