@@ -37,20 +37,17 @@ func state_process(delta):
 	if (character.is_on_floor()):
 		if (character.buffered_action == "jump" &&
 		buffering_time < character.max_buffering_time):
-			character.buffered_action = ""
-			buffering_time = 0
+			reset_buffer()
 			character.has_double_jumped = false
 			jump()
 		elif (character.buffered_action == "roll" &&
 		buffering_time < character.max_buffering_time):
 			next_state = rolling_state
-			character.buffered_action = ""
-			buffering_time = 0
+			reset_buffer()
 			playback.travel(roll_animation)
 		else:
 			next_state = landing_state
-			character.buffered_action = ""
-			buffering_time = 0
+			reset_buffer()
 
 func state_input(event: InputEvent):
 	if (event.is_action_pressed("jump") && !character.has_jumped):
@@ -64,6 +61,10 @@ func state_input(event: InputEvent):
 	
 	if (event.is_action_released("jump")):
 		jump_cut()
+
+func reset_buffer():
+	character.buffered_action = ""
+	buffering_time = 0
 
 func jump():
 	character.velocity.y = utils.jump_velocity
