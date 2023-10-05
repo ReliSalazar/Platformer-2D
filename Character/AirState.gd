@@ -3,13 +3,15 @@ extends State
 class_name AirState
 
 @export var landing_state: State
+@export var rolling_state: State
 @export var double_jump_animation: String = "double_jump"
 @export var landing_animation: String = "fall"
+@export var roll_animation: String = "roll"
 
 var max_coyote_time: float = 0.1
 var coyote_time: float = 0.0
 
-var buffering_jump_time: float = 0.0
+var buffering_time: float = 0.0
 
 func state_process(delta):
 	if (!character.is_on_floor() &&
@@ -21,22 +23,34 @@ func state_process(delta):
 	if (Input.is_action_just_pressed("jump") &&
 	character.has_jumped && character.has_double_jumped):
 		character.buffered_action = "jump"
-		buffering_jump_time = 0
+		buffering_time = 0
 	
-	if (character.buffered_action == "jump"):
-		buffering_jump_time += delta
+	if (Input.is_action_just_pressed("roll") &&
+	(character.has_jumped || character.has_double_jumped)):
+		character.buffered_action = "roll"
+		buffering_time = 0
+	
+	if (character.buffered_action == "jump" ||
+	character.buffered_action == "roll"):
+		buffering_time += delta
 	
 	if (character.is_on_floor()):
 		if (character.buffered_action == "jump" &&
-		buffering_jump_time < character.max_buffering_time):
+		buffering_time < character.max_buffering_time):
 			character.buffered_action = ""
-			buffering_jump_time = 0
+			buffering_time = 0
 			character.has_double_jumped = false
 			jump()
+		elif (character.buffered_action == "roll" &&
+		buffering_time < character.max_buffering_time):
+			next_state = rolling_state
+			character.buffered_action = ""
+			buffering_time = 0
+			playback.travel(roll_animation)
 		else:
 			next_state = landing_state
 			character.buffered_action = ""
-			buffering_jump_time = 0
+			buffering_time = 0
 
 func state_input(event: InputEvent):
 	if (event.is_action_pressed("jump") && !character.has_jumped):

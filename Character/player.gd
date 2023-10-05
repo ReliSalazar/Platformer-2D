@@ -12,7 +12,7 @@ var direction: Vector2 = Vector2.ZERO
 var facing_direction: float = 1.0
 
 var buffered_action: String = ""
-var max_buffering_time: float = 0.15
+var max_buffering_time: float = 0.2
 
 var has_jumped: bool = false
 var has_double_jumped: bool = false
@@ -28,8 +28,8 @@ func _ready():
 func _physics_process(delta):
 	if (!is_rolling):
 		velocity.x = get_horizontal_velocity()
-		velocity.y += get_gravity() * delta
 	
+	velocity.y += get_gravity() * delta
 	if velocity.y > 2000:
 		velocity.y = 2000
 	
