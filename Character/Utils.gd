@@ -37,6 +37,11 @@ class_name CharacterUtils
 # Same as acceleration but on air so player could fast change direction
 @export_range(0.0 , 1.0) var air_acceleration: float = 0.3
 
+## Roll player speed
+@export var roll_speed: int = 200
+## acceleration to reach roll speed
+@export var roll_acceleration: float = 0.5
+
 @export var max_camera_position: int = 35
 @export var camera_movement_factor: float = 0.9
 
@@ -52,6 +57,10 @@ func get_horizontal_velocity(
 		return lerp(velocity.x, target_velocity, acc)
 	else:
 		return lerp(velocity.x, target_velocity, fric)
+
+func get_roll_velocity(facing_direction: float, velocity: Vector2) -> float:
+	var target_velocity = facing_direction * roll_speed
+	return lerp(velocity.x, target_velocity, roll_acceleration)
 
 func calculate_target_camera_x(camera: Camera2D, direction: Vector2) -> float:
 	var move_amount = 2.0 / camera_movement_factor

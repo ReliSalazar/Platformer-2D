@@ -9,6 +9,8 @@ class_name AirState
 var max_coyote_time: float = 0.1
 var coyote_time: float = 0.0
 
+var buffering_jump_time: float = 0.0
+
 func state_process(delta):
 	if (!character.is_on_floor() &&
 	!character.has_jumped && !character.has_double_jumped):
@@ -16,8 +18,25 @@ func state_process(delta):
 	else:
 		coyote_time = 0
 	
+	if (Input.is_action_just_pressed("jump") &&
+	character.has_jumped && character.has_double_jumped):
+		character.buffered_action = "jump"
+		buffering_jump_time = 0
+	
+	if (character.buffered_action == "jump"):
+		buffering_jump_time += delta
+	
 	if (character.is_on_floor()):
-		next_state = landing_state
+		if (character.buffered_action == "jump" &&
+		buffering_jump_time < character.max_buffering_time):
+			character.buffered_action = ""
+			buffering_jump_time = 0
+			character.has_double_jumped = false
+			jump()
+		else:
+			next_state = landing_state
+			character.buffered_action = ""
+			buffering_jump_time = 0
 
 func state_input(event: InputEvent):
 	if (event.is_action_pressed("jump") && !character.has_jumped):

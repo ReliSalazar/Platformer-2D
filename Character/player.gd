@@ -9,9 +9,15 @@ extends CharacterBody2D
 @export var camera: Camera2D
 
 var direction: Vector2 = Vector2.ZERO
+var facing_direction: float = 1.0
+
+var buffered_action: String = ""
+var max_buffering_time: float = 0.15
 
 var has_jumped: bool = false
 var has_double_jumped: bool = false
+
+var is_rolling: bool = false
 
 var max_camera_position: int = 70
 var camera_movement_factor: float = 0.5
@@ -20,12 +26,14 @@ func _ready():
 	animation_tree.active = true
 
 func _physics_process(delta):
-	velocity.y += get_gravity() * delta
+	if (!is_rolling):
+		velocity.x = get_horizontal_velocity()
+		velocity.y += get_gravity() * delta
+	
 	if velocity.y > 2000:
 		velocity.y = 2000
 	
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	velocity.x = get_horizontal_velocity()
 	move_and_slide()
 	update_animation_parameters()
 	update_facing_direction()
@@ -50,8 +58,9 @@ func update_animation_parameters():
 
 # set flip sprite based on is facing direction
 func update_facing_direction():
-	if (direction.x != 0):
+	if (direction.x != 0 && !is_rolling):
 		sprite.flip_h = (direction.x < 0)
+		facing_direction = 1.0 if direction.x > 0 else -1.0
 
 # set camera position x when walking a bit
 func set_camera_position_x():
