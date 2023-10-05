@@ -15,6 +15,7 @@ func state_input(event: InputEvent):
 
 func jump():
 	character.velocity.y = utils.jump_velocity
+	character.has_jumped = true
 	go_to_air_state()
 
 func go_to_air_state():

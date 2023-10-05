@@ -10,6 +10,9 @@ extends CharacterBody2D
 
 var direction: Vector2 = Vector2.ZERO
 
+var has_jumped: bool = false
+var has_double_jumped: bool = false
+
 var max_camera_position: int = 70
 var camera_movement_factor: float = 0.5
 
